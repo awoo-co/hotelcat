@@ -17,8 +17,9 @@ function getCookie(name) {
     return null;
 }
 
-// URL of the hosted JSON file
-const requestsUrl = "/requests.json";
+// Google Sheets API endpoint
+const sheetsApiUrl = "https://sheets.googleapis.com/v4/spreadsheets/1BD_EFnkifNUnJfVP53D085qNmKK92r3XvsFe_AKAEt0/values/Sheet1:append?valueInputOption=USER_ENTERED";
+const apiKey = "AIzaSyBeALtL1M0zQ_sJFeC71pc9CgKcI9hfXyA"; // Replace with your actual API key
 
 // Handle form submission
 document.getElementById("checkInForm").addEventListener("submit", async function (event) {
@@ -27,27 +28,36 @@ document.getElementById("checkInForm").addEventListener("submit", async function
     const guestName = document.getElementById("guestName").value;
     const roomNumber = document.getElementById("roomNumber").value;
 
-    // Fetch the current requests
-    const response = await fetch(requestsUrl);
-    const requests = await response.json();
+    // Prepare the data to append to the Google Sheet
+    const requestData = {
+        values: [[guestName, roomNumber, new Date().toLocaleString()]], // Add timestamp
+    };
 
-    // Add the new request
-    requests.push({ guestName, roomNumber });
+    try {
+        // Append the data to the Google Sheet
+        const response = await fetch(`${sheetsApiUrl}&key=${apiKey}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestData),
+        });
 
-    // Send the updated requests back to the server
-    await fetch(requestsUrl, {
-        method: "PUT", // Netlify doesn't support PUT directly; see limitations below
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requests),
-    });
+        if (!response.ok) {
+            throw new Error("Failed to submit the check-in request.");
+        }
 
-    // Show success message
-    const message = document.getElementById("message");
-    message.textContent = "Check-in request submitted successfully!";
-    message.style.color = "green";
+        // Show success message
+        const message = document.getElementById("message");
+        message.textContent = "Check-in request submitted successfully!";
+        message.style.color = "green";
 
-    // Clear the form
-    document.getElementById("checkInForm").reset();
+        // Clear the form
+        document.getElementById("checkInForm").reset();
+    } catch (error) {
+        // Show error message
+        const message = document.getElementById("message");
+        message.textContent = `Error: ${error.message}`;
+        message.style.color = "red";
+    }
 });

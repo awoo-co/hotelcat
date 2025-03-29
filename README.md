@@ -20,4 +20,5 @@ The Hotel Kiosk Check-In project is a web application designed to facilitate the
 - A confirmation message will be displayed upon successful check-in.
 
 ## note
-this is only a game not a actual hotel site
+* this is only a game not a actual hotel site
+*also a help of github copilot made this game because of issues

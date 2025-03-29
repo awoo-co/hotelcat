@@ -1,70 +1,44 @@
-// URL of the hosted JSON file
-const requestsUrl = "/requests.json";
+// Google Sheets API endpoint
+const sheetsApiUrl = "https://sheets.googleapis.com/v4/spreadsheets/1BD_EFnkifNUnJfVP53D085qNmKK92r3XvsFe_AKAEt0/values/Sheet1";
+const apiKey = "AIzaSyBeALtL1M0zQ_sJFeC71pc9CgKcI9hfXyA"; // Replace with your actual API key
 
 // Fetch and render requests
 async function renderRequests() {
-    const response = await fetch(requestsUrl);
-    const requests = await response.json();
+    try {
+        const response = await fetch(`${sheetsApiUrl}?key=${apiKey}`);
+        const data = await response.json();
 
-    const requestsTable = document.getElementById("requestsTable");
-    requestsTable.innerHTML = ""; // Clear existing rows
+        const requests = data.values || []; // Get rows from the sheet
+        const requestsTable = document.getElementById("requestsTable");
+        requestsTable.innerHTML = ""; // Clear existing rows
 
-    requests.forEach((request, index) => {
-        const row = document.createElement("tr");
+        requests.forEach((request, index) => {
+            const row = document.createElement("tr");
 
-        row.innerHTML = `
-            <td>${request.guestName}</td>
-            <td>${request.roomNumber}</td>
-            <td>
-                <button class="approve-btn" onclick="approveRequest(${index})">Approve</button>
-                <button class="decline-btn" onclick="declineRequest(${index})">Decline</button>
-            </td>
-        `;
+            row.innerHTML = `
+                <td>${request[0]}</td> <!-- Guest Name -->
+                <td>${request[1]}</td> <!-- Room Number -->
+                <td>
+                    <button class="approve-btn" onclick="approveRequest(${index})">Approve</button>
+                    <button class="decline-btn" onclick="declineRequest(${index})">Decline</button>
+                </td>
+            `;
 
-        requestsTable.appendChild(row);
-    });
+            requestsTable.appendChild(row);
+        });
+    } catch (error) {
+        console.error("Failed to fetch requests:", error);
+    }
 }
 
 // Approve a request
 async function approveRequest(index) {
-    const response = await fetch(requestsUrl);
-    const requests = await response.json();
-
-    // Remove the approved request
-    requests.splice(index, 1);
-
-    // Send the updated requests back to the server
-    await fetch(requestsUrl, {
-        method: "PUT", // Netlify doesn't support PUT directly; see limitations below
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requests),
-    });
-
-    alert("Request approved.");
-    renderRequests();
+    alert("Approval functionality is not implemented yet. Please manage directly in the Google Sheet.");
 }
 
 // Decline a request
 async function declineRequest(index) {
-    const response = await fetch(requestsUrl);
-    const requests = await response.json();
-
-    // Remove the declined request
-    requests.splice(index, 1);
-
-    // Send the updated requests back to the server
-    await fetch(requestsUrl, {
-        method: "PUT", // Netlify doesn't support PUT directly; see limitations below
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requests),
-    });
-
-    alert("Request declined.");
-    renderRequests();
+    alert("Decline functionality is not implemented yet. Please manage directly in the Google Sheet.");
 }
 
 // Fetch requests on page load
