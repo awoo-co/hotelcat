@@ -17,47 +17,93 @@ function getCookie(name) {
     return null;
 }
 
-// Google Sheets API endpoint
-const sheetsApiUrl = "https://sheets.googleapis.com/v4/spreadsheets/1BD_EFnkifNUnJfVP53D085qNmKK92r3XvsFe_AKAEt0/values/Sheet1:append?valueInputOption=USER_ENTERED";
-const apiKey = "AIzaSyBeALtL1M0zQ_sJFeC71pc9CgKcI9hfXyA"; // Replace with your actual API key
+const CLIENT_ID = '761085690030-pp072sgla7d3sf9tm2nreibrc5cnb1po.apps.googleusercontent.com'; // Replace with your OAuth 2.0 Client ID
+const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
+const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
 
-// Handle form submission
+let tokenClient;
+let gapiInited = false;
+let gisInited = false;
+
 document.getElementById("checkInForm").addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const guestName = document.getElementById("guestName").value;
     const roomNumber = document.getElementById("roomNumber").value;
 
-    // Prepare the data to append to the Google Sheet
+    // Authenticate and append data
+    if (!gapiInited || !gisInited) {
+        alert("Google API is not initialized yet.");
+        return;
+    }
+
+    tokenClient.callback = async (response) => {
+        if (response.error) {
+            console.error("OAuth Error:", response.error);
+            return;
+        }
+        await appendData(guestName, roomNumber);
+    };
+
+    if (gapi.client.getToken() === null) {
+        tokenClient.requestAccessToken({ prompt: 'consent' });
+    } else {
+        await appendData(guestName, roomNumber);
+    }
+});
+
+function gapiLoaded() {
+    gapi.load('client', initializeGapiClient);
+}
+
+async function initializeGapiClient() {
+    await gapi.client.init({
+        discoveryDocs: [DISCOVERY_DOC],
+    });
+    gapiInited = true;
+}
+
+function gisLoaded() {
+    tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: '', // Will be set dynamically
+    });
+    gisInited = true;
+}
+
+async function appendData(guestName, roomNumber) {
+    const spreadsheetId = '1BD_EFnkifNUnJfVP53D085qNmKK92r3XvsFe_AKAEt0'; // Replace with your spreadsheet ID
+    const range = 'Sheet1'; // Replace with your sheet name
     const requestData = {
-        values: [[guestName, roomNumber, new Date().toLocaleString()]], // Add timestamp
+        values: [[guestName, roomNumber, new Date().toLocaleString()]],
     };
 
     try {
-        // Append the data to the Google Sheet
-        const response = await fetch(`${sheetsApiUrl}&key=${apiKey}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(requestData),
+        const response = await gapi.client.sheets.spreadsheets.values.append({
+            spreadsheetId: spreadsheetId,
+            range: range,
+            valueInputOption: 'USER_ENTERED',
+            resource: requestData,
         });
-
-        if (!response.ok) {
-            throw new Error("Failed to submit the check-in request.");
-        }
-
-        // Show success message
-        const message = document.getElementById("message");
-        message.textContent = "Check-in request submitted successfully!";
-        message.style.color = "green";
-
-        // Clear the form
+        console.log("Data appended:", response);
+        document.getElementById("message").textContent = "Check-in request submitted successfully!";
+        document.getElementById("message").style.color = "green";
         document.getElementById("checkInForm").reset();
     } catch (error) {
-        // Show error message
-        const message = document.getElementById("message");
-        message.textContent = `Error: ${error.message}`;
-        message.style.color = "red";
+        console.error("Error appending data:", error);
+        document.getElementById("message").textContent = "Failed to submit check-in request.";
+        document.getElementById("message").style.color = "red";
     }
-});
+}
+
+// Load the Google API and GIS libraries
+const script1 = document.createElement("script");
+script1.src = "https://apis.google.com/js/api.js";
+script1.onload = gapiLoaded;
+document.body.appendChild(script1);
+
+const script2 = document.createElement("script");
+script2.src = "https://accounts.google.com/gsi/client";
+script2.onload = gisLoaded;
+document.body.appendChild(script2);

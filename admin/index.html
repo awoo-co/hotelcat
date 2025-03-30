@@ -8,21 +8,25 @@
     <link rel="shortcut icon" href="https://teslakitty-cdn.netlify.app/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <div class="admin-container">
+    <div class="container">
         <h1>Admin Panel</h1>
+        <button id="logout_button">Logout</button>
         <table>
             <thead>
                 <tr>
                     <th>Guest Name</th>
                     <th>Room Number</th>
-                    <th>Action</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="requestsTable">
-                <!-- Requests will be dynamically populated here -->
+                <!-- Rows will be dynamically populated here -->
             </tbody>
         </table>
     </div>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
     <script src="script.js"></script>
 </body>
 </html>

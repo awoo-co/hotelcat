@@ -7,13 +7,13 @@ body {
     color: #e0e0e0;
 }
 
-.admin-container {
+.container {
     max-width: 800px;
     margin: 50px auto;
     padding: 20px;
-    background: #1e1e1e;
+    background-color: #1e1e1e;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 h1 {
@@ -61,11 +61,19 @@ button {
 .approve-btn {
     background-color: #4CAF50;
     color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 .decline-btn {
     background-color: #f44336;
     color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
 }
 
 button:hover {

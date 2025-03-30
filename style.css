@@ -7,26 +7,24 @@ body {
     padding: 0;
     background-color: #121212;
     color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
 }
 
 .container {
     background: #1e1e1e;
-    padding: 20px 30px;
+    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
     width: 100%;
     max-width: 400px;
+    margin: 50px auto;
 }
 
 h1 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #e0e0e0;
+    text-align: center;
 }
 
 form {
@@ -65,11 +63,12 @@ button {
 }
 
 button:hover {
-    background-color: #003f7f;
+    background-color: #004494;
 }
 
 .message {
     margin-top: 20px;
-    font-size: 16px;
+    font-size: 14px;
     color: #28a745;
+    text-align: center;
 }
