@@ -37,18 +37,23 @@ document.getElementById("checkInForm").addEventListener("submit", async function
         return;
     }
 
-    tokenClient.callback = async (response) => {
-        if (response.error) {
-            console.error("OAuth Error:", response.error);
-            return;
-        }
+    const savedToken = getCookie("access_token");
+    if (savedToken) {
+        console.log("Using saved access token");
+        gapi.client.setToken({ access_token: savedToken });
         await appendData(guestName, roomNumber);
-    };
-
-    if (gapi.client.getToken() === null) {
-        tokenClient.requestAccessToken({ prompt: 'consent' });
     } else {
-        await appendData(guestName, roomNumber);
+        console.log("No saved token, prompting user to log in");
+        tokenClient.callback = async (response) => {
+            if (response.error) {
+                console.error("OAuth Error:", response.error);
+                return;
+            }
+            console.log("Access token received:", response.access_token);
+            setCookie("access_token", response.access_token, 1); // Save the token for 1 day
+            await appendData(guestName, roomNumber);
+        };
+        tokenClient.requestAccessToken({ prompt: 'consent' });
     }
 });
 
@@ -92,8 +97,13 @@ async function appendData(guestName, roomNumber) {
         document.getElementById("checkInForm").reset();
     } catch (error) {
         console.error("Error appending data:", error);
-        document.getElementById("message").textContent = "Failed to submit check-in request.";
-        document.getElementById("message").style.color = "red";
+        if (error.status === 401) {
+            console.log("Access token expired, prompting user to log in again");
+            tokenClient.requestAccessToken({ prompt: '' });
+        } else {
+            document.getElementById("message").textContent = "Failed to submit check-in request.";
+            document.getElementById("message").style.color = "red";
+        }
     }
 }
 

@@ -61,23 +61,29 @@ button {
 .approve-btn {
     background-color: #4CAF50;
     color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 4px;
 }
 
 .decline-btn {
     background-color: #f44336;
     color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 4px;
 }
 
 button:hover {
     opacity: 0.9;
+}
+
+/* Fade-out animation */
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-out {
+    animation: fadeOut 1s forwards;
 }
 
 footer {
