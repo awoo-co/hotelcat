@@ -1,17 +1,27 @@
 # Hotel Kiosk Check-In
 
 ## Overview
-The Hotel Kiosk Check-In project is a web application designed to facilitate the check-in process for guests at a hotel. It provides a user-friendly interface where guests can enter their name and room number to complete their check-in.
+The **Hotel Kiosk Check-In** project is a web-based application designed to simulate the check-in process for a hotel. It provides an interactive and user-friendly interface where guests can enter their details to complete a check-in. This project is intended as a fun, educational game and not an actual hotel management system.
 
-## Files
-- **index.html**: Contains the structure of the web page, including the check-in form.
-- **style.css**: Defines the styles for the web page, including a dark mode theme.
-- **script.js**: Handles form submission and input validation, providing feedback to users.
+## Features
+- **Guest Check-In Form**: Guests can enter their name and room number to check in.
+- **Admin Panel**: Admins can view, approve, or decline check-in requests.
+- **Dark Mode Theme**: A visually appealing dark mode design for better user experience.
+- **Real-Time Updates**: Admin panel automatically refreshes to display new check-in requests.
+- **Interactive Feedback**: Users receive confirmation messages upon successful check-in.
+
+## Project Structure
+- **`index.html`**: The main page for the kiosk where guests can check in.
+- **`style.css`**: Stylesheet for the application, including dark mode styling.
+- **`script.js`**: Handles form submission, input validation, and interaction with the Google Sheets API.
+- **`admin/index.html`**: Admin panel for managing check-in requests.
+- **`admin/script.js`**: Handles admin functionalities like approving, declining, and deleting requests.
 
 ## Setup Instructions
-1. Clone the repository to your local machine.
-2. Open the project directory in your preferred code editor.
-3. Open `index.html` in a web browser to view the application.
+1. Clone the repository to your local machine:
+   ```bash
+   git clone <repository-url>
+   ```
 
 ## Usage Guidelines
 - Enter your name in the "Enter your name" field.
