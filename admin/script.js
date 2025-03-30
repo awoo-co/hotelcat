@@ -1,4 +1,3 @@
-// admin/script.js
 const CLIENT_ID = '761085690030-pp072sgla7d3sf9tm2nreibrc5cnb1po.apps.googleusercontent.com'; // Replace with your OAuth 2.0 Client ID
 const DISCOVERY_DOC = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
 const SCOPES = 'https://www.googleapis.com/auth/spreadsheets';
@@ -39,6 +38,7 @@ function gisLoaded() {
             }
             console.log("Access token received:", response.access_token);
             localStorage.setItem("access_token", response.access_token); // Save the token
+            gapi.client.setToken({ access_token: response.access_token }); // Set the token for API calls
             await fetchData();
             startPolling(); // Start polling for updates
         },
@@ -82,9 +82,11 @@ async function fetchData() {
         }
     } catch (error) {
         console.error("Error fetching data:", error);
+
+        // Handle token expiration
         if (error.status === 401) {
-            console.log("Access token expired, prompting user to log in again");
-            tokenClient.requestAccessToken({ prompt: '' });
+            console.log("Access token expired, refreshing token...");
+            tokenClient.requestAccessToken({ prompt: '' }); // Refresh token silently
         }
     }
 }

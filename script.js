@@ -31,7 +31,6 @@ document.getElementById("checkInForm").addEventListener("submit", async function
     const guestName = document.getElementById("guestName").value;
     const roomNumber = document.getElementById("roomNumber").value;
 
-    // Authenticate and append data
     if (!gapiInited || !gisInited) {
         alert("Google API is not initialized yet.");
         return;
@@ -51,6 +50,7 @@ document.getElementById("checkInForm").addEventListener("submit", async function
             }
             console.log("Access token received:", response.access_token);
             setCookie("access_token", response.access_token, 1); // Save the token for 1 day
+            gapi.client.setToken({ access_token: response.access_token });
             await appendData(guestName, roomNumber);
         };
         tokenClient.requestAccessToken({ prompt: 'consent' });
@@ -97,13 +97,8 @@ async function appendData(guestName, roomNumber) {
         document.getElementById("checkInForm").reset();
     } catch (error) {
         console.error("Error appending data:", error);
-        if (error.status === 401) {
-            console.log("Access token expired, prompting user to log in again");
-            tokenClient.requestAccessToken({ prompt: '' });
-        } else {
-            document.getElementById("message").textContent = "Failed to submit check-in request.";
-            document.getElementById("message").style.color = "red";
-        }
+        document.getElementById("message").textContent = "Failed to submit check-in request.";
+        document.getElementById("message").style.color = "red";
     }
 }
 
