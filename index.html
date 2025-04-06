@@ -3,23 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Kiosk Check-In</title>
+    <title>Waiting Room</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="https://teslakitty-cdn.netlify.app/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="manifest.json">
 </head>
-<body class="dark-mode">
+<body>
     <div class="container">
+        <h1>Waiting Room</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Guest Name</th>
+                    <th>Room Number</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="requestsTable">
+                <!-- Rows will be dynamically populated here -->
+            </tbody>
+        </table>
         <button id="logout_button">Logout</button>
-        <h1>Hotel Kiosk Check-In</h1>
-        <form id="checkInForm">
-            <input type="text" id="guestName" placeholder="Enter your name" required>
-            <input type="number" id="roomNumber" placeholder="Enter room number" required>
-            <button type="submit">Check In</button>
-        </form>
-        <div class="message" id="message"></div>
     </div>
     <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
     <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
     <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then((registration) => {
+                    console.log('Service Worker registered with scope:', registration.scope);
+                })
+                .catch((error) => {
+                    console.error('Service Worker registration failed:', error);
+                });
+        }
+    </script>
 </body>
 </html>
