@@ -51,16 +51,37 @@ function maybeEnableLogin() {
     if (gapiInited && gisInited) {
         console.log("Google API and GIS initialized. Ready to log in.");
         const savedToken = localStorage.getItem("access_token");
+
         if (savedToken) {
             console.log("Using saved access token");
             gapi.client.setToken({ access_token: savedToken });
-            fetchData();
-            startPolling(); // Start polling for updates
+
+            // Validate the token before proceeding
+            gapi.client.request({
+                path: 'https://www.googleapis.com/oauth2/v1/tokeninfo',
+                params: { access_token: savedToken },
+            }).then(() => {
+                fetchData();
+                startPolling(); // Start polling for updates
+            }).catch(() => {
+                console.log("Saved token is invalid, showing login button");
+                showLoginButton();
+            });
         } else {
-            console.log("No saved token, prompting user to log in");
-            tokenClient.requestAccessToken({ prompt: 'consent' });
+            console.log("No saved token, showing login button");
+            showLoginButton();
         }
     }
+}
+
+function showLoginButton() {
+    const loginButton = document.createElement("button");
+    loginButton.id = "login_button";
+    loginButton.textContent = "Login";
+    loginButton.addEventListener("click", () => {
+        tokenClient.requestAccessToken({ prompt: 'consent' });
+    });
+    document.body.appendChild(loginButton);
 }
 
 async function fetchData() {
@@ -85,8 +106,8 @@ async function fetchData() {
 
         // Handle token expiration
         if (error.status === 401) {
-            console.log("Access token expired, refreshing token...");
-            tokenClient.requestAccessToken({ prompt: '' }); // Refresh token silently
+            console.log("Access token expired, showing login button");
+            showLoginButton();
         }
     }
 }
