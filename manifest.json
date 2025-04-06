@@ -1,6 +1,6 @@
 {
-    "name": "Hotel Kiosk Admin Panel",
-    "short_name": "Hotel Admin",
+    "name": "Hotel",
+    "short_name": "Hotel",
     "start_url": "./",
     "display": "standalone",
     "background_color": "#ffffff",
