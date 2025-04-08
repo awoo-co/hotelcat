@@ -72,3 +72,19 @@ button:hover {
     color: #28a745;
     text-align: center;
 }
+
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+a:visited {
+    color: #0056b3;
+}
+a:active {
+    color: #004494;
+}
