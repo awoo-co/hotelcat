@@ -1,5 +1,5 @@
 # teslakitty-hotel website notice
-* remodeling because of issues of backend services so i have to change to a diffrent service maybe like [render](http://render.com/)
+* remodeling because of issues of backend services so i might remodel it to node.js or something
 
 
 
