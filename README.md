@@ -4,5 +4,6 @@
 # hotelcat
 
 ## go to pages
-* go to [admin panel](https://teslakitty-hotel.netlify.app/admin)
-* go to [waiting room](https://teslakitty-hotel.netlify.app/)
+* go to [admin panel](https://hotelcat.onrender.com/admin/)
+* go to [waiting room](https://hotelcat.onrender.com/)
+
