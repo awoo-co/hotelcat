@@ -13,6 +13,12 @@
         <h1>Waiting Room</h1>
         <h2>urgent please read readme.md in the github repo for changes</h2>
         <h3>website remodeling some features and things might not work</h3>
+        <form id="signinForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Sign In</button>
+        </form>
+        <div id="signinResult"></div>
         <table>
             <thead>
                 <tr>
@@ -26,8 +32,6 @@
             </tbody>
         </table>
     </div>
-    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
-    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
     <script src="script.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
