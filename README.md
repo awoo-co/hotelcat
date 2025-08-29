@@ -1,5 +1,5 @@
 # hotelcat website notice
-* remodeling because of issues of backend services so i might remodel it to node.js or something
+* remodeling is now complete is now node.s
 
 # hotelcat
 
