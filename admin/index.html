@@ -10,11 +10,80 @@
 <body>
     <div class="container">
         <h1>HotelCat Admin Panel</h1>
-        <div id="adminContent">
+        <form id="signinForm">
+            <input type="text" id="username" placeholder="Admin Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Admin Sign In</button>
+        </form>
+        <div id="signinResult"></div>
+        <div id="adminContent" style="display:none;">
             <!-- Admin features go here -->
-            <p>Welcome to the admin panel. Features coming soon.</p>
+            <div class="admin-controls">
+                <button id="addUserBtn" class="btn">Add User</button>
+                <button id="addRequestBtn" class="btn">Add Request</button>
+                <button id="deleteUserBtn" class="btn btn-danger">Delete Selected User</button>
+                <button id="signOutBtn" class="btn btn-secondary">Sign Out</button>
+            </div>
+            
+            <h2>Registered Users</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAllUsers"></th>
+                        <th>User ID</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTable">
+                    <!-- User rows will be populated here -->
+                </tbody>
+            </table>
+            
+            <h2>Guest Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Guest Name</th>
+                        <th>Room Number</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="requestsTable">
+                    <!-- Request rows will be populated here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Add User Modal -->
+        <div id="addUserModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add New User</h2>
+                <form id="addUserForm">
+                    <input type="email" id="newUserEmail" placeholder="Email" required>
+                    <input type="password" id="newUserPassword" placeholder="Password" required>
+                    <input type="text" id="newUserStatus" placeholder="Status (e.g., Active)" value="Active">
+                    <button type="submit">Add User</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Add Request Modal -->
+        <div id="addRequestModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Guest Request</h2>
+                <form id="addRequestForm">
+                    <input type="text" id="newGuestName" placeholder="Guest Name" required>
+                    <input type="number" id="newRoomNumber" placeholder="Room Number" required>
+                    <input type="text" id="newRequestStatus" placeholder="Status (e.g., Pending)" value="Pending">
+                    <button type="submit">Add Request</button>
+                </form>
+            </div>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

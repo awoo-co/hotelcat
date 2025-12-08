@@ -6,7 +6,6 @@
     <title>Waiting Room</title>
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="https://teslakitty-cdn.netlify.app/favicon.ico" type="image/x-icon">
-    <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <div class="container">
@@ -32,17 +31,6 @@
             </tbody>
         </table>
     </div>
-    <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then((registration) => {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                })
-                .catch((error) => {
-                    console.error('Service Worker registration failed:', error);
-                });
-        }
-    </script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
