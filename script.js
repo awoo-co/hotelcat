@@ -1,3 +1,11 @@
+// Import Firebase initialization
+import './firebase-init.js';
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+// Initialize Firebase Auth
+const auth = getAuth();
+
 document.getElementById('signinForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const username = document.getElementById('username').value.trim();
@@ -9,18 +17,11 @@ document.getElementById('signinForm').addEventListener('submit', async function(
     }
 
     try {
-        const res = await fetch('/api/signin', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-        const data = await res.json();
-        if (data.success) {
-            document.getElementById('signinResult').textContent = 'Sign-in successful! Your user ID is ' + data.userId;
-        } else {
-            document.getElementById('signinResult').textContent = 'Sign-in failed: ' + data.error;
-        }
+        // Sign in with Firebase Authentication
+        const userCredential = await signInWithEmailAndPassword(auth, username, password);
+        const user = userCredential.user;
+        document.getElementById('signinResult').textContent = 'Sign-in successful! Your user ID is ' + user.uid;
     } catch (err) {
-        document.getElementById('signinResult').textContent = 'Network error. Please try again.';
+        document.getElementById('signinResult').textContent = 'Sign-in failed: ' + err.message;
     }
 });
